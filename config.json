@@ -1,0 +1,49 @@
+{
+  "host": {
+	"label": "Host",
+	"type": "String",
+	"required": true,
+	"help": "Please provide the domain/IP address where your Apache ActiveMQ is hosted."
+  },
+  "port": {
+    "label": "Port",
+    "type": "Number",
+    "required": true,
+    "help": "Please provide the port number to use."
+  },
+  "username": {
+	"label": "Username",
+	"type": "String",
+	"required": true,
+	"help": "Please provide your Apache ActiveMQ account username."
+  },
+  "password": {
+    "label": "Password",
+    "type": "String",
+    "required": true,
+    "help": "Please provide your Apache ActiveMQ account password."
+  },
+  "default_message_type": {
+    "label": "Default Message Type",
+    "type": "String",
+    "enum": [
+      "queue",
+      "topic"
+    ],
+    "required": false,
+    "default": "queue",
+    "help": "The default message type to be used."
+  },
+  "default_message": {
+    "label": "Default Message",
+    "type": "String",
+    "required" : true,
+    "help": "The default message to send."
+  },
+  "topic_queue_name": {
+    "label": "Default Topic or Queue Name.",
+    "type": "String",
+    "required" : true,
+    "help": "The default topic or queue in which the message will be sent to."
+  }
+}
