@@ -1,7 +1,7 @@
 {
   "name": "activemq-connector",
   "description": "Apache Active Connector Plugin for the Reekoh IoT Platform.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Reekoh, Inc.",
   "main": "app.js",
   "scripts": {
@@ -18,11 +18,12 @@
   },
   "devDependencies": {
     "gulp": "^3.9.0",
-    "gulp-cli": "^1.0.0",
+    "gulp-cli": "^1.1.0",
     "gulp-jshint": "^2.0.0",
     "gulp-json-lint": "^0.1.0",
     "gulp-mocha": "^2.2.0",
     "gulp-plumber": "^1.0.1",
     "mocha": "^2.3.4"
-  }
+  },
+  "license": "LGPL-3.0"
 }
