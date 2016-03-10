@@ -10,9 +10,12 @@ var cp     = require('child_process'),
 describe('Connector', function () {
 	this.slow(5000);
 
-	after('terminate child process', function () {
+	after('terminate child process', function (done) {
+		this.timeout(7000);
+
         setTimeout(function(){
             connector.kill('SIGKILL');
+			done();
         }, 5000);
 
 	});
@@ -52,7 +55,7 @@ describe('Connector', function () {
 	});
 
 	describe('#data', function (done) {
-		it('should process the data', function () {
+		it('should process the JSON data', function () {
 			connector.send({
 				type: 'data',
 				data: {
@@ -60,6 +63,26 @@ describe('Connector', function () {
                     message: 'This is a test message from Apache ActiveMQ Plugin.',
                     topic_queue_name: 'test'
 				}
+			}, done);
+		});
+	});
+
+	describe('#data', function (done) {
+		it('should process the Array data', function () {
+			connector.send({
+				type: 'data',
+				data: [
+					{
+						message_type: 'queue',
+						message: 'This is a test message from Apache ActiveMQ Plugin.',
+						topic_queue_name: 'test'
+					},
+					{
+						message_type: 'queue',
+						message: 'This is a test message from Apache ActiveMQ Plugin.',
+						topic_queue_name: 'test'
+					}
+				]
 			}, done);
 		});
 	});
