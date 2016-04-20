@@ -8,7 +8,7 @@ var platform = require('./platform'),
     isPlainObject = require('lodash.isplainobject'),
 	config;
 
-let sendData = (data) => {
+let sendData = (data, callback) => {
     if(isEmpty(data.message_type))
         data.message_type = config.default_message_type;
 
@@ -37,24 +37,34 @@ let sendData = (data) => {
         url: url,
         body: JSON.stringify(data.message)
     }, function (error) {
-        if (error)
-            platform.handleException(error);
-        else {
+        if (!error){
             platform.log(JSON.stringify({
                 title: 'Data sent to Apache ActiveMQ.',
                 data: data
             }));
         }
+
+        callback(error);
     });
 };
 
 platform.on('data', function (data) {
     if(isPlainObject(data)){
-        sendData(data);
+        sendData(data, (error) => {
+            if(error) {
+                console.error(error);
+                platform.handleException(error);
+            }
+        });
     }
     else if(isArray(data)){
-        async.each(data, (datum) => {
-            sendData(datum);
+        async.each(data, (datum, done) => {
+            sendData(datum, done);
+        }, (error) => {
+            if(error) {
+                console.error(error);
+                platform.handleException(error);
+            }
         });
     }
     else
