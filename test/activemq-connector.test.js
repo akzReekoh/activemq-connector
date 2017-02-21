@@ -48,7 +48,8 @@ describe('ActiveMQ Connector Test', () => {
     it('should send data to third party client', (done) => {
       let data = {
         title: 'test meesage',
-        data: 'this is a test message from activemq connector'
+        data: 'this is a test message from activemq connector',
+        messageType: 'queue'
       }
 
       _channel.sendToQueue('ip.activemq', new Buffer(JSON.stringify(data)))

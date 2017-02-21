@@ -29,7 +29,7 @@
     "help": "Please provide your Apache ActiveMQ account password.",
     "maxLength": 50
   },
-  "default_message_type": {
+  "defaultMessageType": {
     "label": "Default Message Type",
     "type": "String",
     "enum": [
@@ -40,14 +40,14 @@
     "default": "queue",
     "help": "The default message type to be used."
   },
-  "default_message": {
+  "defaultMessage": {
     "label": "Default Message",
     "type": "String",
     "required" : true,
     "help": "The default message to send.",
     "maxLength": 5000
   },
-  "topic_queue_name": {
+  "topicQueueName": {
     "label": "Default Topic or Queue Name.",
     "type": "String",
     "required" : true,

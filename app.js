@@ -9,16 +9,16 @@ let isPlainObject = require('lodash.isplainobject')
 let request = require('request')
 
 let sendData = (data, callback) => {
-  if (isEmpty(data.message_type)) { data.message_type = _plugin.config.default_message_type }
+  if (isEmpty(data.messageType)) { data.messageType = _plugin.config.defaultMessageType }
 
-  if (data.message_type.toLowerCase() !== 'queue' && data.message_type.toLowerCase() !== 'topic') { data.message_type = _plugin.config.default_message_type }
+  if (data.messageType.toLowerCase() !== 'queue' && data.messageType.toLowerCase() !== 'topic') { data.messageType = _plugin.config.defaultMessageType }
 
   if (isEmpty(data.message)) {
-    data.message = _plugin.config.default_message
+    data.message = _plugin.config.defaultMessage
   }
 
-  if (isEmpty(data.topic_queue_name)) {
-    data.topic_queue_name = _plugin.config.topic_queue_name
+  if (isEmpty(data.topicQueueName)) {
+    data.topicQueueName = _plugin.config.topicQueueName
   }
 
   // sanitize the host
@@ -30,7 +30,7 @@ let sendData = (data, callback) => {
   }
   host = host.split(':')[0]
 
-  let url = 'http://' + _plugin.config.username + ':' + _plugin.config.password + '@' + host + ':' + _plugin.config.port + '/api/message/' + data.topic_queue_name + '?type=' + data.message_type.toLowerCase()
+  let url = 'http://' + _plugin.config.username + ':' + _plugin.config.password + '@' + host + ':' + _plugin.config.port + '/api/message/' + data.topicQueueName + '?type=' + data.messageType.toLowerCase()
 
   request.post({
     url: url,
