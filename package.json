@@ -4,9 +4,6 @@
   "version": "1.0.2",
   "author": "Reekoh, Inc.",
   "main": "app.js",
-  "scripts": {
-    "test": "gulp test"
-  },
   "dependencies": {
     "async": "^2.1.4",
     "lodash.isarray": "^4.0.0",
