@@ -1,9 +1,13 @@
 {
   "host": {
-	"label": "Host",
-	"type": "String",
-	"required": true,
-	"help": "Please provide the domain/IP address where your Apache ActiveMQ is hosted."
+    "label": "Host",
+    "type": "String",
+    "required": true,
+    "help": "Please provide the domain/IP address where your Apache ActiveMQ is hosted.",
+    "maxLength": 50,
+    "format": {
+      "pattern": "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$"
+    }
   },
   "port": {
     "label": "Port",
@@ -12,16 +16,18 @@
     "help": "Please provide the port number to use."
   },
   "username": {
-	"label": "Username",
-	"type": "String",
-	"required": true,
-	"help": "Please provide your Apache ActiveMQ account username."
+    "label": "Username",
+    "type": "String",
+    "required": true,
+    "help": "Please provide your Apache ActiveMQ account username.",
+    "maxLength": 50
   },
   "password": {
     "label": "Password",
     "type": "Password",
     "required": true,
-    "help": "Please provide your Apache ActiveMQ account password."
+    "help": "Please provide your Apache ActiveMQ account password.",
+    "maxLength": 50
   },
   "default_message_type": {
     "label": "Default Message Type",
@@ -38,12 +44,14 @@
     "label": "Default Message",
     "type": "String",
     "required" : true,
-    "help": "The default message to send."
+    "help": "The default message to send.",
+    "maxLength": 5000
   },
   "topic_queue_name": {
     "label": "Default Topic or Queue Name.",
     "type": "String",
     "required" : true,
-    "help": "The default topic or queue in which the message will be sent to."
+    "help": "The default topic or queue in which the message will be sent to.",
+    "maxLength": 100
   }
 }

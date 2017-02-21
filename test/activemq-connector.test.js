@@ -1,89 +1,58 @@
-'use strict';
+'use strict'
 
-const HOST = '52.90.56.209',
-    PORT = '8161';
+const amqp = require('amqplib')
 
-var cp     = require('child_process'),
-	assert = require('assert'),
-	connector;
+let should = require('should')
+let cp = require('child_process')
+let _channel = null
+let _conn = null
+let connector = null
 
-describe('Connector', function () {
-	this.slow(5000);
+describe('ActiveMQ Connector Test', () => {
+  before('init', () => {
+    process.env.ACCOUNT = 'adinglasan'
+    process.env.CONFIG = '{"host":"localhost", "port":"8161", "username":"admin", "password":"admin", "default_message_type":"queue", "default_message":"This is a default message from Apache ActiveMQ Plugin.", "topic_queue_name":"default"}'
+    process.env.INPUT_PIPE = 'ip.activemq'
+    process.env.LOGGERS = 'logger1, logger2'
+    process.env.EXCEPTION_LOGGERS = 'ex.logger1, ex.logger2'
+    process.env.BROKER = 'amqp://guest:guest@127.0.0.1/'
 
-	after('terminate child process', function (done) {
-		this.timeout(7000);
+    amqp.connect(process.env.BROKER)
+      .then((conn) => {
+        _conn = conn
+        return conn.createChannel()
+      }).then((channel) => {
+        _channel = channel
+      }).catch((err) => {
+        console.log(err)
+      })
+  })
 
-        setTimeout(function(){
-            connector.kill('SIGKILL');
-			done();
-        }, 5000);
+  after('terminate child process', function (done) {
+    this.timeout(8000)
 
-	});
+    setTimeout(function () {
+      _conn.close()
+      connector.kill('SIGKILL')
+      done()
+    }, 5000)
+  })
 
-	describe('#spawn', function () {
-		it('should spawn a child process', function () {
-			assert.ok(connector = cp.fork(process.cwd()), 'Child process not spawned.');
-		});
-	});
+  describe('#spawn', function () {
+    it('should spawn a child process', function () {
+      should.ok(connector = cp.fork(process.cwd()), 'Child process not spawned.')
+    })
+  })
 
-	describe('#handShake', function () {
-		it('should notify the parent process when ready within 5 seconds', function (done) {
-			this.timeout(5000);
+  describe('#data', () => {
+    it('should send data to third party client', (done) => {
+      let data = {
+        title: 'test meesage',
+        data: 'this is a test message from activemq connector'
+      }
 
-			connector.on('message', function (message) {
-				if (message.type === 'ready')
-					done();
-			});
-
-			connector.send({
-				type: 'ready',
-				data: {
-					options: {
-						host: HOST,
-                        port: PORT,
-                        username: 'admin',
-                        password: 'admin',
-                        default_message_type: 'queue',
-                        default_message: 'This is a default message from Apache ActiveMQ Plugin.',
-                        topic_queue_name: 'default'
-					}
-				}
-			}, function (error) {
-				assert.ifError(error);
-			});
-		});
-	});
-
-	describe('#data', function (done) {
-		it('should process the JSON data', function () {
-			connector.send({
-				type: 'data',
-				data: {
-					message_type: 'queue',
-                    message: 'This is a test message from Apache ActiveMQ Plugin.',
-                    topic_queue_name: 'test'
-				}
-			}, done);
-		});
-	});
-
-	describe('#data', function (done) {
-		it('should process the Array data', function () {
-			connector.send({
-				type: 'data',
-				data: [
-					{
-						message_type: 'queue',
-						message: 'This is a test message from Apache ActiveMQ Plugin.',
-						topic_queue_name: 'test'
-					},
-					{
-						message_type: 'queue',
-						message: 'This is a test message from Apache ActiveMQ Plugin.',
-						topic_queue_name: 'test'
-					}
-				]
-			}, done);
-		});
-	});
-});
+      _channel.sendToQueue('ip.activemq', new Buffer(JSON.stringify(data)))
+      done()
+    })
+  })
+})
