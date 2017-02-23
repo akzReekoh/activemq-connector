@@ -2,11 +2,9 @@
 
 const amqp = require('amqplib')
 
-let should = require('should')
-let cp = require('child_process')
 let _channel = null
 let _conn = null
-let connector = null
+let app = null
 
 describe('ActiveMQ Connector Test', () => {
   before('init', () => {
@@ -28,24 +26,23 @@ describe('ActiveMQ Connector Test', () => {
       })
   })
 
-  after('terminate child process', function (done) {
-    this.timeout(8000)
-
-    setTimeout(function () {
-      _conn.close()
-      connector.kill('SIGKILL')
-      done()
-    }, 5000)
+  after('close connection', function (done) {
+    _conn.close()
+    done()
   })
 
-  describe('#spawn', function () {
-    it('should spawn a child process', function () {
-      should.ok(connector = cp.fork(process.cwd()), 'Child process not spawned.')
+  describe('#start', function () {
+    it('should start the app', function (done) {
+      this.timeout(10000)
+      app = require('../app')
+      app.once('init', done)
     })
   })
 
   describe('#data', () => {
-    it('should send data to third party client', (done) => {
+    it('should send data to third party client', function (done) {
+      this.timeout(15000)
+
       let data = {
         title: 'test meesage',
         data: 'this is a test message from activemq connector',
@@ -53,7 +50,7 @@ describe('ActiveMQ Connector Test', () => {
       }
 
       _channel.sendToQueue('ip.activemq', new Buffer(JSON.stringify(data)))
-      done()
+      setTimeout(done, 10000)
     })
   })
 })

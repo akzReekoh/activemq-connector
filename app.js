@@ -77,4 +77,7 @@ _plugin.on('data', (data) => {
  */
 _plugin.once('ready', () => {
   _plugin.log('ActiveMQ Connector has been initialized.')
+  _plugin.emit('init')
 })
+
+module.exports = _plugin
