@@ -28,8 +28,8 @@ These parameters are then injected to the plugin from the platform.
 ## Sample input data
 ```
 {
-    message_type: 'queue', //message type 
+    messageType: 'queue', //message type 
     message: 'This is a test message from Apache ActiveMQ Plugin.',
-    topic_queue_name: 'test' //topic or queue name
+    topicQueueName: 'test' //topic or queue name
 }
 ```
